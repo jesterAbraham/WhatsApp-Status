@@ -10,14 +10,11 @@ class AllStatusScreen extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final allStatusProvider = context.read<AllStatusProvider>();
-
     return Scaffold(
       appBar: AppBar(
         centerTitle: true,
-        title: const CustomTextWidget(
-          text: "Status Viewer",
-          textColor: AppColors.appWhite,
-          textSize: 30,
+        title: const Text(
+          "Status Viewer",
         ),
         backgroundColor: AppColors.appBarColor,
       ),
@@ -72,46 +69,55 @@ class AllStatusScreen extends StatelessWidget {
               padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 8),
               child: const CustomTextWidget(text: "Recent Updates"),
             ),
-            ListView.separated(
-              physics: const NeverScrollableScrollPhysics(),
-              shrinkWrap: true,
-              itemBuilder: (context, index) {
-                final result = allStatusProvider.eachList[index];
-                return ListTile(
-                  leading: Container(
-                    padding: const EdgeInsets.all(1),
-                    decoration: BoxDecoration(
-                      color: AppColors.appWhite,
-                      border:
-                          Border.all(color: AppColors.appBarColor, width: 2),
-                      borderRadius: BorderRadius.circular(28),
-                    ),
-                    child: Container(
-                      height: 50,
-                      width: 50,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(25),
-                        image: DecorationImage(
-                          fit: BoxFit.cover,
-                          image: NetworkImage(result.personImage!),
-                        ),
-                      ),
-                    ),
-                  ),
-                  title: CustomTextWidget(
-                    text: result.personName!,
-                  ),
-                  subtitle: CustomTextWidget(
-                    text: result.statusTime!,
-                    textSize: 18,
-                  ),
-                );
-              },
-              itemCount: allStatusProvider.eachList.length,
-              separatorBuilder: (context, _) {
-                return const SizedBox(
-                  height: 20,
-                );
+            Consumer<AllStatusProvider>(
+              builder: (context, value, _) {
+                return value.isLoading
+                    ? const Center(
+                        child: CircularProgressIndicator(),
+                      )
+                    : ListView.separated(
+                        itemCount: allStatusProvider.uniquest.length,
+                        physics: const NeverScrollableScrollPhysics(),
+                        shrinkWrap: true,
+                        itemBuilder: (context, index) {
+                          final result = allStatusProvider.uniquest[index];
+                          return ListTile(
+                            leading: Container(
+                              padding: const EdgeInsets.all(1),
+                              decoration: BoxDecoration(
+                                color: AppColors.appWhite,
+                                border: Border.all(
+                                    color: AppColors.appBarColor, width: 2),
+                                borderRadius: BorderRadius.circular(28),
+                              ),
+                              child: Container(
+                                height: 50,
+                                width: 50,
+                                decoration: BoxDecoration(
+                                  borderRadius: BorderRadius.circular(25),
+                                  image: DecorationImage(
+                                    fit: BoxFit.cover,
+                                    image:
+                                        NetworkImage(result!.profile!.image!),
+                                  ),
+                                ),
+                              ),
+                            ),
+                            title: CustomTextWidget(
+                              text: result.profile!.name!,
+                            ),
+                            subtitle: CustomTextWidget(
+                              text: "10:0$index",
+                              textSize: 14,
+                            ),
+                          );
+                        },
+                        separatorBuilder: (context, _) {
+                          return const SizedBox(
+                            height: 20,
+                          );
+                        },
+                      );
               },
             )
           ],

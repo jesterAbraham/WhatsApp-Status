@@ -5,14 +5,15 @@ import 'package:http/http.dart' as http;
 class GetAllStatusApi {
   static Future<dynamic> getAllStatus() async {
     try {
-      log("call");
       bool network = await InternetConnectivity.checking();
-      log(network.toString());
       if (network) {
-        final responce = await http.get(Uri.parse(
-            "http://my-json-server.typicode.com/shakeebM/StoriesApi/stories"));
-        if (responce.statusCode == 200) {
-          return responce;
+        final response = await http.get(
+          Uri.parse(
+            "http://my-json-server.typicode.com/shakeebM/StoriesApi/stories",
+          ),
+        );
+        if (response.statusCode == 200) {
+          return response;
         } else {
           throw "Something went wrong";
         }

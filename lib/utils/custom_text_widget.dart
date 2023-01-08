@@ -22,9 +22,10 @@ class CustomTextWidget extends StatelessWidget {
       child: Text(
         text,
         style: TextStyle(
-            color: textColor ?? Colors.black,
-            fontSize: textSize ?? 20,
-            fontWeight: textWeight),
+          color: textColor ?? Colors.black,
+          fontSize: textSize ?? 16,
+          fontWeight: textWeight,
+        ),
       ),
     );
   }
